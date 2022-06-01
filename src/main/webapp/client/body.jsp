@@ -9,14 +9,19 @@
   <body style="text-align:center;">
     <div id="content" style="margin:0 auto;width:840px;">
     	<div id="category" style="float:left; width:200px; border:1px solid red; text-align:left; height:300px;"> 
+    		
     		分类列表：
     		<ul>		
+    		
 	    		<c:forEach var="category" items="${categories }">
 	    			<li>
 	    				<a href="${pageContext.request.contextPath }/client/IndexServlet?method=listBookWithCategory&category_id=${category.id}">${category.name }</a>
 	    			</li>
 	    		</c:forEach>
     		</ul>	
+    		
+    		<a href="${pageContext.request.contextPath }/client/IndexServlet?method=query"> 猜你喜欢</a></br>
+    		
     	</div>
     	<div id="bookandpage" style="float:left; margin-left:30px;">   		
     		<div id="books">
@@ -31,7 +36,7 @@
     							<li>作者：${book.author }</li>
     							<li>售价：${book.price }</li>
     							<li>
-    								<a href="${pageContext.request.contextPath }/client/BuyServlet?bookid=${book.id}">加入购物车</a>
+    								<a href="${pageContext.request.contextPath }/client/BuyServlet?bookid=${book.id}&bookname=${book.name}">加入购物车</a>
     							</li>
     						</ul>
     					</div>

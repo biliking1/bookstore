@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -22,6 +24,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import domain.Book;
 import domain.Category;
 import domain.Page;
+import domain.Reco;
 import service.impl.BusinessServiceImpl;
 import utils.JdbcUtils;
 import utils.WebUtils;
@@ -43,6 +46,22 @@ public class BookServlet extends HttpServlet {
 		if(method.equalsIgnoreCase("delete")){
 			delete(request, response);
 		}
+		if(method.equalsIgnoreCase("getrecord")){
+			getrecord(request, response);
+		}
+	}
+	private void getrecord(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	try {
+		QueryRunner runner = new QueryRunner(JdbcUtils.getDataSource());
+		String sql = "select* from ip";
+		List<Reco> list= (List<Reco>)runner.query(sql, new BeanListHandler(Reco.class));
+		request.setAttribute("recos", list);
+		request.getRequestDispatcher("/manager/getrecord.jsp").forward(request, response);
+	} catch (SQLException e) {			
+		e.printStackTrace();
+		throw new RuntimeException(e); 
+	}
+		
 	}
 	private void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id=new String(request.getParameter("id").getBytes("ISO-8859-1"),"gb2312");
@@ -83,6 +102,7 @@ public class BookServlet extends HttpServlet {
 
 	private Book doupLoad(HttpServletRequest request) {
 		//把上传的图片保存到images目录中，并把request中的请求参数封装到Book中
+		
 		Book book = new Book();
 		try {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -121,6 +141,7 @@ public class BookServlet extends HttpServlet {
 	public String makeFileName(String filename){
 		String ext = filename.substring(filename.lastIndexOf(".") + 1);//lastIndexOf("\\.")这样写不行
 		return UUID.randomUUID().toString() + "." + ext;
+		
 	}
 
 	private void addUI(HttpServletRequest request, HttpServletResponse response)

@@ -42,8 +42,8 @@ public class CategoryServlet extends HttpServlet {
 	private void listAll(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		BusinessServiceImpl service = new BusinessServiceImpl();
-		List<Category> CategoryList = service.getAllCategory();
-		request.setAttribute("categories", CategoryList);
+		List<Category> CategoryLis = service.getAllCategory();
+		request.setAttribute("categories", CategoryLis);
 		request.getRequestDispatcher("/manager/listcategory.jsp").forward(request, response);
 	}
 

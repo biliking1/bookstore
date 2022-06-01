@@ -2,11 +2,11 @@ package domain;
 
 public class Category {
 	/*
-	 create table category
+	 create table ip
 	 (
-		id varchar(40) primary key,
-		name varchar(100) not null unique,
-		description varchar(255)
+		ip varchar(40) ,
+		name varchar(100) ,
+		time varchar(255)
 	 );
 	 */
 	
